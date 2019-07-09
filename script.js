@@ -1,51 +1,68 @@
-// Check support for file API
-if (window.File && window.FileReader) {
-    // Success! Do nothing for now
-} else {
-    let info = document.getElementById('info')
-    info.innerText = 'Oh uh, your browser does not seem to support what we do.';
-}
+;(() => {
+    let member = {
+        inputEl: null,
+        dropEl: null,
+        infoEl: null
+    };
 
-function showFileInfo(file) {
-    let text = 'Name: '
-        + escape(file.name)
-        + ' Size: '
-        + file.size
-        + 'bytes';
+    main();
 
-    document.getElementById('info').innerText = text;
-}
+    function main() {
+        member = {...initElements()}
+        checkFileApiSupport()
+    }
 
-function handleFileSelect(event) {
-    let file = event.target.files[0];
-    showFileInfo(file);
-}
+    function initElements() {
+        const containerEl = document.createElement('div');
+        containerEl.innerHTML =
+            `<input type="file"/><br>
+            <div class="drop-zone">Drop input file here</div> 
+            <output></output>`;
 
-function handleDragOver(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
-}
+        const inputEl = containerEl.querySelector('input'),
+            dropEl = containerEl.querySelector('div'),
+            infoEl = containerEl.querySelector('output');
 
-function handleDrop(event) {
-    event.stopPropagation();
-    event.preventDefault();
+        inputEl.addEventListener('change', handleFileSelect, false);
+        dropEl.addEventListener('dragover', handleDragOver, false);
+        dropEl.addEventListener('drop', handleDrop, false);
 
-    let file = event.dataTransfer.files[0];
-    showFileInfo(file);
-}
+        document.body.appendChild(containerEl)
 
-// Set up handler for file selections
-document
-    .getElementById('source')
-    .addEventListener('change', handleFileSelect, false);
+        return {
+            inputEl,
+            dropEl,
+            infoEl,
+        };
+    }
 
-// Set up handler for drag over
-document
-    .getElementById('drop_zone')
-    .addEventListener('dragover', handleDragOver, false);
+    function checkFileApiSupport() {
+        if (!(window.File && window.FileReader)) {
+            member.infoEl.innerText = 'Oh uh, your browser does not seem to support what we do.';
+        }
+    }
 
-// Set up handler for drop
-document
-    .getElementById('drop_zone')
-    .addEventListener('drop', handleDrop, false)
+    function handleDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleDrop(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const file = event.dataTransfer.files[0];
+        showFileInfo(file);
+    }
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        showFileInfo(file);
+    }
+
+    function showFileInfo(file) {
+        member.infoEl.innerText = `Name: ${file.name} Size: ${file.size} bytes`;
+    }
+
+})();
