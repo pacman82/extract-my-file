@@ -5,7 +5,7 @@
 // will "boot" the module and make it ready to use. Currently browsers
 // don't support natively imported WebAssembly as an ES module, but
 // eventually the manual initialization won't be required!
-import init, { extractingIsSupported } from './pkg/extract_my_file.js';
+import init, {extractingIsSupported} from './pkg/extract_my_file.js';
 
 let member = {
     inputEl: null,
@@ -14,10 +14,10 @@ let member = {
 };
 
 (function main() {
-    member = {...initElements()}
-    checkFileApiSupport()
+    member = {...initElements()};
+    checkFileApiSupport();
     initWasm();
-})()
+})();
 
 async function initWasm() {
     await init();
@@ -38,7 +38,7 @@ function initElements() {
     dropEl.addEventListener('dragover', handleDragOver, false);
     dropEl.addEventListener('drop', handleDrop, false);
 
-    document.body.appendChild(containerEl)
+    document.body.appendChild(containerEl);
 
     return {
         inputEl,
@@ -73,7 +73,7 @@ function handleFileSelect(event) {
 }
 
 function showFileInfo(file) {
-    const extension = file.name.substr((file.name.lastIndexOf('.') + 1));
-    const is_supported = extractingIsSupported(extension);
-    member.infoEl.innerText = `Name: ${file.name} Size: ${file.size} bytes Supported: ${is_supported}`;
+    const extension = file.name.substr((file.name.lastIndexOf('.') + 1)),
+        isSupported = extractingIsSupported(extension);
+    member.infoEl.innerText = `Name: ${file.name}, Size: ${file.size} bytes, Supported: ${isSupported}`;
 }
