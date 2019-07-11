@@ -85,7 +85,7 @@ function createHandleFileLoaded(file) {
     return function handleFileLoaded(event) {
         const buffer = event.target.result;
         const extension = file.name.substr((file.name.lastIndexOf('.') + 1));
-        const src = Source.new(extension, new Uint8Array(buffer));
+        const src = new Source(extension, new Uint8Array(buffer));
         showFileInfo(file, src);
     }
 }
@@ -93,7 +93,7 @@ function createHandleFileLoaded(file) {
 function showFileInfo(file, src) {
     const size = src.size();
     const isSupported = src.extractingIsSupported();
-    const extSize = src.extract();
+    const extSize = src.extract().length;
     member.infoEl.innerText = `Name: ${file.name}, Size: ${size} bytes, Supported: ${isSupported}, Extracted size: ${extSize}`;
 }
 
