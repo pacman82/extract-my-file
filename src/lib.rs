@@ -1,7 +1,7 @@
-use wasm_bindgen::prelude::*;
+
 use libflate::gzip;
 use std::io;
-
+use wasm_bindgen::prelude::*;
 /// Source archive the user has selected.
 #[wasm_bindgen]
 pub struct Source {
@@ -18,10 +18,7 @@ impl Source {
         } else {
             Decoder::Unsupported
         };
-        Source {
-            decoder, 
-            buffer
-        }
+        Source { decoder, buffer }
     }
 
     #[wasm_bindgen(js_name = extractingIsSupported)]
@@ -32,15 +29,13 @@ impl Source {
         }
     }
 
-    pub fn size(&self) -> usize{
+    pub fn size(&self) -> usize {
         self.buffer.len()
     }
 
     pub fn extract(&self) -> Vec<u8> {
         match self.decoder {
-            Decoder::Gzip => {
-                ungz(&self.buffer).unwrap_or_else(|_| Vec::new())
-            },
+            Decoder::Gzip => ungz(&self.buffer).unwrap_or_else(|_| Vec::new()),
             Decoder::Unsupported => Vec::new(),
         }
     }
