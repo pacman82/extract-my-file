@@ -1,0 +1,23 @@
+{
+  "name": "extract-my-file",
+  "version": "0.1.0",
+  "description": "A website using wasm to extract your file on your local machine",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pacman82/extract-my-file.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pacman82/extract-my-file/issues"
+  },
+  "homepage": "https://github.com/pacman82/extract-my-file#readme",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "prettier": "1.18.2"
+  }
+}
