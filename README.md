@@ -21,5 +21,10 @@ Since this web application is designed as a simple static website you should be 
 
 By using the `--target web` flag we loose out on the ability of the default target to easily use npm packages from within Rust code, but we also no longer require a bundler.
 
+## Development Dependencies
+
+* ESLint (<https://eslint.org>) is used for javascript linking.
+* `prettier` (<https://prettier.io>)is used for formatting.
+
 [1]: https://rustup.rs/
 [2]: https://rustwasm.github.io/wasm-pack/installer/

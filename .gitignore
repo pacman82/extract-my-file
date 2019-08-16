@@ -1,3 +1,8 @@
+# Rust
 /target
 **/*.rs.bk
 Cargo.lock
+
+# Ecma Script
+/node_modules
+package-lock.json
