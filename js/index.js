@@ -1,6 +1,6 @@
 import("../pkg/index.js")
   .then(wasm => {
-    Source = wasm.Source;
+    let Source = wasm.Source;
 
     let member = {
       inputEl: null,
