@@ -1,6 +1,6 @@
 # Extract my file
 
-A website using wasm to extract your file on your local machine.
+A website using wasm to extract your file on your local machine. If you are not interested in developing this site, but want to pack / unpack your files, you [visit the site here](git subtree push --prefix dist origin gh-pages).
 
 ## How to install
 
@@ -54,3 +54,8 @@ npm test -- --safari
 ## Deployment
 
 The `/dist/` folder on the master branch is published on github pages. As [described here](https://gist.github.com/cobyism/4730490).
+
+```shell
+npm start build
+git subtree push --prefix dist origin gh-pages
+```
