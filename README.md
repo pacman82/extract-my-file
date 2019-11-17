@@ -1,30 +1,52 @@
 # Extract my file
 
-A website using wasm to extract your file on your local machine
+A website using wasm to extract your file on your local machine.
 
-## Prerequesites for building the site
+## How to install
 
-This site uses Web Assembly (wasm) which is compiled from Rust code. So to work on it some toolchains are required:
-
-* The Rust toolchain to build our rust code and manange native dependencies. You can [install Rust from here][1].
-* `wasm-pack` is mostly a convinience which contains and invokes some other tools (mainly the Rust compiler and `wasm-bindgen`) for us in order to generate Web assembly and Java Script bindings. You can [install wasm-pack from here][2].
-
-## Building the site
-
-With the prerequesites installed, it should be as simple as:
-
-```bash
-wasm-pack build --target web
+```sh
+npm install
 ```
 
-Since this web application is designed as a simple static website you should be able to just look at it with a local browser.
+## How to run in debug mode
 
-By using the `--target web` flag we loose out on the ability of the default target to easily use npm packages from within Rust code, but we also no longer require a bundler.
+```sh
+# Builds the project and opens it in a new browser tab. Auto-reloads when the project changes.
+npm start
+```
 
-## Development Dependencies
+## How to build in release mode
 
-* ESLint (<https://eslint.org>) is used for javascript linking.
-* `prettier` (<https://prettier.io>)is used for formatting.
+```sh
+# Builds the project and places it into the `dist` folder.
+npm run build
+```
 
-[1]: https://rustup.rs/
-[2]: https://rustwasm.github.io/wasm-pack/installer/
+## How to run unit tests
+
+```sh
+# Runs tests in Firefox
+npm test -- --firefox
+
+# Runs tests in Chrome
+npm test -- --chrome
+
+# Runs tests in Safari
+npm test -- --safari
+```
+
+## What does each file do?
+
+* `Cargo.toml` contains the standard Rust metadata. You put your Rust dependencies in here. You must change this file with your details (name, description, version, authors, categories)
+
+* `package.json` contains the standard npm metadata. You put your JavaScript dependencies in here. You must change this file with your details (author, name, version)
+
+* `webpack.config.js` contains the Webpack configuration. You shouldn't need to change this, unless you have very special needs.
+
+* The `js` folder contains your JavaScript code (`index.js` is used to hook everything into Webpack, you don't need to change it).
+
+* The `src` folder contains your Rust code.
+
+* The `static` folder contains any files that you want copied as-is into the final build. It contains an `index.html` file which loads the `index.js` file.
+
+* The `tests` folder contains your Rust unit tests.
