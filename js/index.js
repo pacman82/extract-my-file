@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+
 import("../pkg/index.js")
   .then(wasm => {
     let Source = wasm.Source;
@@ -74,17 +76,23 @@ import("../pkg/index.js")
     function createHandleFileLoaded(file) {
       return function handleFileLoaded(event) {
         const buffer = event.target.result;
-        const extension = file.name.substr(file.name.lastIndexOf(".") + 1);
+        const pos_split = file.name.lastIndexOf(".");
+        const extension = file.name.substr(pos_split + 1);
+        const trunk = file.name.substr(0, pos_split);
         const src = new Source(extension, new Uint8Array(buffer));
         showFileInfo(file, src);
+        if (src.extractingIsSupported()) {
+          let out = src.extract();
+          let blob = new Blob([out])
+          saveAs(blob, trunk); 
+        }
       };
     }
 
     function showFileInfo(file, src) {
       const size = src.size();
       const isSupported = src.extractingIsSupported();
-      const extSize = src.extract().length;
-      member.infoEl.innerText = `Name: ${file.name}, Size: ${size} bytes, Supported: ${isSupported}, Extracted size: ${extSize}`;
+      member.infoEl.innerText = `Name: ${file.name}, Size: ${size} bytes, Supported: ${isSupported}`;
     }
   })
   .catch(console.error);
