@@ -22,10 +22,7 @@ async function getWasmSource() {
 }
 
 function initElements() {
-  const containerEl = document.createElement('div')
-  containerEl.innerHTML = `<input type="file"/><br>
-              <div class="drop-zone">Drop input file here</div>
-              <output></output>`
+  const containerEl = document.getElementById('container')
 
   const inputEl = containerEl.querySelector('input'),
     dropEl = containerEl.querySelector('div'),
@@ -34,8 +31,6 @@ function initElements() {
   inputEl.addEventListener('change', handleFileSelect, false)
   dropEl.addEventListener('dragover', handleDragOver, false)
   dropEl.addEventListener('drop', handleDrop, false)
-
-  document.body.appendChild(containerEl)
 
   return {
     inputEl,
