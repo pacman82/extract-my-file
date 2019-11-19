@@ -1,6 +1,6 @@
 # Extract my file
 
-A website using wasm to extract your file on your local machine. If you are not interested in developing this site, but want to pack / unpack your files, you [visit the site here](git subtree push --prefix dist origin gh-pages).
+A website using wasm to extract your file on your local machine. If you are not interested in developing this site, but want to pack / unpack your files, you [visit the site here](https://pacman82.github.io/extract-my-file/).
 
 ## How to install
 
