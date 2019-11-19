@@ -7,6 +7,11 @@ let member = {
   WasmSource: null,
 }
 
+;(async function main() {
+  member = { ...initElements(), WasmSource: await getWasmSource() }
+  checkFileApiSupport()
+})()
+
 async function getWasmSource() {
   try {
     const wasm = await import('../pkg/index.js')
@@ -94,8 +99,3 @@ function showFileInfo(file, src) {
   const isSupported = src.extractingIsSupported()
   member.infoEl.innerText = `Name: ${file.name}, Size: ${size} bytes, Supported: ${isSupported}`
 }
-
-;(async function main() {
-  member = { ...initElements(), WasmSource: await getWasmSource() }
-  checkFileApiSupport()
-})()
