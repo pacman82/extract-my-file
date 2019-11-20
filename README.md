@@ -35,7 +35,7 @@ npm test -- --chrome
 npm test -- --safari
 ```
 
-## What does each file do?
+## Meaning of each file
 
 * `Cargo.toml` contains the standard Rust metadata. You put your Rust dependencies in here. You must change this file with your details (name, description, version, authors, categories)
 
