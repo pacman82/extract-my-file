@@ -4,11 +4,13 @@ let member = {
   inputEl: null,
   dropEl: null,
   infoEl: null,
+  unsupportedFileTypeInfoEl: null,
+  unsupportedBrowserInfoEl: null,
   WasmSource: null,
 }
 
 ;(async function main() {
-  member = { ...initElements(), WasmSource: await getWasmSource() }
+  member = { WasmSource: await getWasmSource(), ...initElements() }
   checkFileApiSupport()
 })()
 
@@ -25,8 +27,10 @@ function initElements() {
   const containerEl = document.getElementById('container')
 
   const inputEl = containerEl.querySelector('input'),
-    dropEl = containerEl.querySelector('div'),
-    infoEl = containerEl.querySelector('output')
+    dropEl = containerEl.querySelector('.drop-zone'),
+    infoEl = containerEl.querySelector('output'),
+    unsupportedFileTypeInfoEl = containerEl.querySelector('.unsupported-filetype-info'),
+    unsupportedBrowserInfoEl = containerEl.querySelector('.unsupported-browser-info')
 
   inputEl.addEventListener('change', handleFileSelect, false)
   dropEl.addEventListener('dragover', handleDragOver, false)
@@ -36,12 +40,16 @@ function initElements() {
     inputEl,
     dropEl,
     infoEl,
+    unsupportedFileTypeInfoEl,
+    unsupportedBrowserInfoEl,
   }
 }
 
 function checkFileApiSupport() {
-  if (!(window.File && window.FileReader)) {
-    member.infoEl.innerText = 'Oh uh, your browser does not seem to support what we do.'
+  if (window.File && window.FileReader) {
+    member.unsupportedBrowserInfoEl.classList.add('hide')
+  } else {
+    member.unsupportedBrowserInfoEl.classList.remove('hide')
   }
 }
 
@@ -90,7 +98,13 @@ function createHandleFileLoaded(file) {
 }
 
 function showFileInfo(file, src) {
-  const size = src.size()
-  const isSupported = src.extractingIsSupported()
-  member.infoEl.innerText = `Name: ${file.name}, Size: ${size} bytes, Supported: ${isSupported}`
+  const size = src.size(),
+    isSupported = src.extractingIsSupported()
+
+  if (isSupported) {
+    member.unsupportedFileTypeInfoEl.classList.add('hide')
+  } else {
+    member.unsupportedFileTypeInfoEl.classList.remove('hide')
+  }
+  member.infoEl.innerText = `${file.name}, ${size} bytes`
 }
