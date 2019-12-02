@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Extract my file</title>
+    <meta name="description" content="Extract (unzip, expand) files locally in your browser." />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Extract my file</title>
-  <meta name="description" content="Extract (unzip, expand) files locally in your browser.">
-  <link rel="stylesheet" href="style.css">
-</head>
+  <body>
+    <h1>Extract my file</h1>
+    <div id="container">
+      <div class="file-upload-output-container">
+        <div class="file-upload-container">
+          <label for="file-upload"> <img src="open_in_browser-24px.svg" />Browse </label>
+          <input id="file-upload" type="file" />
+        </div>
+        <div class="unsupported-filetype-info warning hide">Unsupported Filetype</div>
+        <div class="unsupported-browser-info warning hide">
+          Oh uh, your browser does not seem to support what we do.
+        </div>
+        <output />
+      </div>
 
-<body>
-  <h1>Extract (Unzip) your file here</h1>
-  <div id="container">
-    <input type="file" /><br>
-    <div class="drop-zone">Drop input file here</div>
-    <output></output>
-    <p>Supported Compression formats: <ul><li>gz</ul></p>
-    <p>Archives are currently not supported.</p>
-    <p>Using this website you can extract (aka. unzip, expand) files without installing additional
-        tools. We care about your privacy and not your files. This site will work locally in your
-        browser and your data is not send anywhere. You do not need to take our word for this, if this
-        site is completly cached by your browser it is going to work without internet.</p>
-    <br>
-  </div>
-  <script src="index.js"></script>
-</body>
+      <br />
 
+      <div class="drop-zone">Drop file here</div>
+
+      <div class="description">
+        <p>Supported Compression formats:</p>
+        <ul>
+          <li>gz</li>
+        </ul>
+        <p>Archives are currently not supported.</p>
+        <p>
+          Using this website you can extract (aka. unzip, expand) files without installing
+          additional tools. We care about your privacy and not your files. This site will work
+          locally in your browser and your data is not send anywhere. You do not need to take our
+          word for this, if this site is completly cached by your browser it is going to work
+          without internet.
+        </p>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
 </html>
