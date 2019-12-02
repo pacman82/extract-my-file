@@ -56,6 +56,6 @@ npm test -- --safari
 The `/dist/` folder on the master branch is published on github pages. As [described here](https://gist.github.com/cobyism/4730490).
 
 ```shell
-npm start build
+npm run build
 git subtree push --prefix dist origin gh-pages
 ```
