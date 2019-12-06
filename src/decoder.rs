@@ -1,6 +1,7 @@
 use libflate::gzip;
 use std::io;
 use wasm_bindgen::prelude::*;
+use js_sys;
 
 const SUPPORTED_FILE_ENDINGS: &[&str] = &["gz"];
 
@@ -11,6 +12,7 @@ pub fn extension_is_supported(extension: &str) -> bool {
 
 pub enum DecoderError {
     UnsupportedFileExtension,
+    IoError(io::Error)
 }
 
 impl From<DecoderError> for JsValue {
@@ -18,6 +20,9 @@ impl From<DecoderError> for JsValue {
         match source {
             DecoderError::UnsupportedFileExtension => {
                 JsValue::from_str("Unsupported File Extension")
+            }
+            DecoderError::IoError(io_error) => {
+                JsValue::from_str(&format!("IO error: {}", io_error))
             }
         }
     }
@@ -30,19 +35,25 @@ pub struct Decoder;
 impl Decoder {
     #[wasm_bindgen(constructor)]
     pub fn new(extension: &str) -> Result<Decoder, JsValue> {
-        Decoder::from_file_extension(extension)
+        Ok(Decoder::from_file_extension(extension)?)
     }
 
+    #[wasm_bindgen()]
+    pub fn extract(&self, file: &JsValue) -> Result<Vec<u8>, JsValue>{
+        let array = js_sys::Uint8Array::new(file);
+        let buffer = array.to_vec();
+        let unpacked = ungz(&buffer).map_err(DecoderError::IoError)?;
+        Ok(unpacked)
+    }
+}
+
+impl Decoder {
     /// Factory to choose the right decoder from the file extension
-    pub fn from_file_extension(extension: &str) -> Result<Decoder, JsValue> {
+    fn from_file_extension(extension: &str) -> Result<Decoder, DecoderError> {
         match extension {
             "gz" => Ok(Decoder),
             _ => Err(DecoderError::UnsupportedFileExtension.into()),
         }
-    }
-
-    pub fn extract(&self, buffer: &[u8]) -> Vec<u8> {
-        ungz(buffer).unwrap_or_else(|_| Vec::new())
     }
 }
 
