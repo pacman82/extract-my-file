@@ -1,29 +1,49 @@
-const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
-const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const path = require('path'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin')
 
-const dist = path.resolve(__dirname, "dist");
+const dist = path.resolve(__dirname, 'dist')
 
 module.exports = {
-  mode: "production",
+  mode: 'production',
   entry: {
-    index: "./js/index.js"
+    index: './src_website/index.js',
   },
   output: {
     path: dist,
-    filename: "[name].js"
+    filename: '[name].js',
   },
   devServer: {
     contentBase: dist,
   },
   plugins: [
-    new CopyPlugin([
-      path.resolve(__dirname, "static")
-    ]),
-
+    new HtmlWebpackPlugin({
+      title: 'Extract my file',
+      template: 'src_website/index.html',
+      hash: true,
+    }),
     new WasmPackPlugin({
       crateDirectory: __dirname,
-      extraArgs: "--out-name index"
+      extraArgs: '--out-name index',
     }),
-  ]
-};
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader'],
+      },
+    ],
+  },
+}
