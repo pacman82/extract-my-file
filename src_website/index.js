@@ -1,4 +1,5 @@
 import { saveAs } from 'file-saver'
+import './style.scss'
 
 let member = {
   inputEl: null,
@@ -76,15 +77,17 @@ function processFile(file) {
 // Binds `file` to `handleFileLoaded`.
 function createHandleFileLoaded(file) {
   return function handleFileLoaded(event) {
-    const buffer = event.target.result
-    const pos_split = file.name.lastIndexOf('.')
-    const extension = file.name.substr(pos_split + 1)
-    const trunk = file.name.substr(0, pos_split)
-    const src = new member.WasmSource(extension, new Uint8Array(buffer))
+    const buffer = event.target.result,
+      pos_split = file.name.lastIndexOf('.'),
+      extension = file.name.substr(pos_split + 1),
+      trunk = file.name.substr(0, pos_split),
+      src = new member.WasmSource(extension, new Uint8Array(buffer))
+
     showFileInfo(file, src)
+
     if (src.extractingIsSupported()) {
-      let out = src.extract()
-      let blob = new Blob([out])
+      const out = src.extract(),
+        blob = new Blob([out])
       saveAs(blob, trunk)
     }
   }
