@@ -14,21 +14,20 @@
   <body>
     <h1>Extract my file</h1>
     <div id="container">
-      <div class="file-upload-output-container">
-        <div class="file-upload-container">
-          <label for="file-upload"> <img src="open_in_browser-24px.svg" />Browse </label>
-          <input id="file-upload" type="file" />
+      <div class="drop-zone">
+        <div class="file-upload-output-container">
+          <div class="file-upload-container">
+            <label for="file-upload"> <img src="open_in_browser-24px.svg" />Browse</label>
+            <input id="file-upload" type="file" />
+          </div>
+          <div class="unsupported-filetype-info warning hide">Unsupported Filetype</div>
+          <div class="unsupported-browser-info warning hide">
+            Oh uh, your browser does not seem to support what we do.
+          </div>
+          <output />
         </div>
-        <div class="unsupported-filetype-info warning hide">Unsupported Filetype</div>
-        <div class="unsupported-browser-info warning hide">
-          Oh uh, your browser does not seem to support what we do.
-        </div>
-        <output />
+        <p class="drop-zone-text">Drop file here</p>
       </div>
-
-      <br />
-
-      <div class="drop-zone">Drop file here</div>
 
       <div class="description">
         <p>Supported Compression formats:</p>
