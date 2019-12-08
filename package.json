@@ -1,6 +1,9 @@
 {
   "name": "extract-my-file",
-  "author": "You <you@example.com>",
+  "contributors": [
+    "Markus Klein (https://github.com/pacman82)",
+    "David Werner (https://github.com/d-werner)"
+  ],
   "version": "0.1.0",
   "scripts": {
     "build": "rimraf dist pkg && webpack",
