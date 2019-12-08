@@ -2,8 +2,10 @@ use wasm_bindgen::prelude::*;
 use web_sys::console;
 
 mod decoder;
+mod encoder;
 
 pub use decoder::{Decoder, extension_is_supported};
+pub use encoder::Encoder;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
