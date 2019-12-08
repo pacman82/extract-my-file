@@ -10,7 +10,8 @@ let member = {
 }
 
 ;(async function main() {
-  member = { WasmSource: await getWasmSource(), ...initElements() }
+  member.WasmSource = await getWasmSource()
+  initElements()
   checkFileApiSupport()
 })()
 
@@ -26,23 +27,15 @@ async function getWasmSource() {
 function initElements() {
   const containerEl = document.getElementById('container')
 
-  const inputEl = containerEl.querySelector('input'),
-    dropEl = containerEl.querySelector('.drop-zone'),
-    infoEl = containerEl.querySelector('output'),
-    unsupportedFileTypeInfoEl = containerEl.querySelector('.unsupported-filetype-info'),
-    unsupportedBrowserInfoEl = containerEl.querySelector('.unsupported-browser-info')
+  member.inputEl = containerEl.querySelector('input')
+  member.dropEl = containerEl.querySelector('.drop-zone')
+  member.infoEl = containerEl.querySelector('output')
+  member.unsupportedFileTypeInfoEl = containerEl.querySelector('.unsupported-filetype-info')
+  member.unsupportedBrowserInfoEl = containerEl.querySelector('.unsupported-browser-info')
 
-  inputEl.addEventListener('change', handleFileSelect, false)
-  dropEl.addEventListener('dragover', handleDragOver, false)
-  dropEl.addEventListener('drop', handleDrop, false)
-
-  return {
-    inputEl,
-    dropEl,
-    infoEl,
-    unsupportedFileTypeInfoEl,
-    unsupportedBrowserInfoEl,
-  }
+  member.inputEl.addEventListener('change', handleFileSelect, false)
+  member.dropEl.addEventListener('dragover', handleDragOver, false)
+  member.dropEl.addEventListener('drop', handleDrop, false)
 }
 
 function checkFileApiSupport() {
