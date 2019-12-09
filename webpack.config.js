@@ -1,8 +1,10 @@
 const path = require('path'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
+  MiniCssExtractPlugin = require('mini-css-extract-plugin'),
   WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin')
 
-const dist = path.resolve(__dirname, 'dist')
+const isDevMode = process.env.NODE_ENV !== 'production',
+  dist = path.resolve(__dirname, 'dist')
 
 module.exports = {
   mode: 'production',
@@ -22,6 +24,10 @@ module.exports = {
       template: 'src_website/index.html',
       hash: true,
     }),
+    new MiniCssExtractPlugin({
+      filename: isDevMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevMode ? '[id].css' : '[id].[hash].css',
+    }),
     new WasmPackPlugin({
       crateDirectory: __dirname,
       extraArgs: '--out-name index',
@@ -32,8 +38,12 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: isDevMode,
+            },
+          },
           // Translates CSS into CommonJS
           'css-loader',
           // Compiles Sass to CSS
