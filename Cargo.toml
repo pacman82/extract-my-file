@@ -32,12 +32,13 @@ wee_alloc = { version = "0.4.5", optional = true }
 
 # `libflate` allows us to zip and unzip files
 libflate = "0.1.27"
+js-sys = "0.3.32"
 
 # The `web-sys` crate allows you to interact with the various browser APIs,
 # like the DOM.
 [dependencies.web-sys]
-version = "0.3.31"
-features = ["console"]
+version = "0.3.32"
+features = ["console", "File", "Blob"]
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -50,5 +51,4 @@ console_error_panic_hook = "0.1.6"
 [dev-dependencies]
 wasm-bindgen-test = "0.3.4"
 futures = "0.3.1"
-js-sys = "0.3.31"
 wasm-bindgen-futures = "0.4.4"

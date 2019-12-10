@@ -7,19 +7,23 @@ let member = {
   infoEl: null,
   unsupportedFileTypeInfoEl: null,
   unsupportedBrowserInfoEl: null,
-  WasmSource: null,
+}
+
+let wasm = {
+  extensionIsSupported: null,
+  Decoder: null,
 }
 
 ;(async function main() {
-  member.WasmSource = await getWasmSource()
+  wasm = await getWasm()
   initElements()
   checkFileApiSupport()
 })()
 
-async function getWasmSource() {
+async function getWasm() {
   try {
     const wasm = await import('../pkg/index.js')
-    return wasm.Source
+    return wasm;
   } catch (exc) {
     console.error(exc)
   }
@@ -80,27 +84,20 @@ function createHandleFileLoaded(file) {
     const buffer = event.target.result,
       pos_split = file.name.lastIndexOf('.'),
       extension = file.name.substr(pos_split + 1),
-      trunk = file.name.substr(0, pos_split),
-      src = new member.WasmSource(extension, new Uint8Array(buffer))
-
-    showFileInfo(file, src)
-
-    if (src.extractingIsSupported()) {
-      const out = src.extract(),
+      trunk = file.name.substr(0, pos_split)
+    showFileInfo(file)
+    if (wasm.extensionIsSupported(extension)) {
+      member.unsupportedFileTypeInfoEl.classList.add('hide')
+      const src = new wasm.Decoder(extension),
+        out = src.extract(new Uint8Array(buffer)),
         blob = new Blob([out])
       saveAs(blob, trunk)
+    } else {
+      member.unsupportedFileTypeInfoEl.classList.remove('hide')
     }
   }
 }
 
-function showFileInfo(file, src) {
-  const size = src.size(),
-    isSupported = src.extractingIsSupported()
-
-  if (isSupported) {
-    member.unsupportedFileTypeInfoEl.classList.add('hide')
-  } else {
-    member.unsupportedFileTypeInfoEl.classList.remove('hide')
-  }
-  member.infoEl.innerText = `${file.name}, ${size} bytes`
+function showFileInfo(file) {
+  member.infoEl.innerText = `${file.name}`
 }
