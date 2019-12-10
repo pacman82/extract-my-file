@@ -7,23 +7,21 @@ let member = {
   infoEl: null,
   unsupportedFileTypeInfoEl: null,
   unsupportedBrowserInfoEl: null,
-}
-
-let wasm = {
-  extensionIsSupported: null,
-  Decoder: null,
+  wasm: {
+    extensionIsSupported: null,
+    Decoder: null,
+  },
 }
 
 ;(async function main() {
-  wasm = await getWasm()
+  await initWasm()
   initElements()
   checkFileApiSupport()
 })()
 
-async function getWasm() {
+async function initWasm() {
   try {
-    const wasm = await import('../pkg/index.js')
-    return wasm;
+    member.wasm = await import('../pkg/index.js')
   } catch (exc) {
     console.error(exc)
   }
@@ -32,11 +30,14 @@ async function getWasm() {
 function initElements() {
   const containerEl = document.getElementById('container')
 
-  member.inputEl = containerEl.querySelector('input')
-  member.dropEl = containerEl.querySelector('.drop-zone')
-  member.infoEl = containerEl.querySelector('output')
-  member.unsupportedFileTypeInfoEl = containerEl.querySelector('.unsupported-filetype-info')
-  member.unsupportedBrowserInfoEl = containerEl.querySelector('.unsupported-browser-info')
+  member = {
+    ...member,
+    inputEl: containerEl.querySelector('input'),
+    dropEl: containerEl.querySelector('.drop-zone'),
+    infoEl: containerEl.querySelector('output'),
+    unsupportedFileTypeInfoEl: containerEl.querySelector('.unsupported-filetype-info'),
+    unsupportedBrowserInfoEl: containerEl.querySelector('.unsupported-browser-info'),
+  }
 
   member.inputEl.addEventListener('change', handleFileSelect, false)
   member.dropEl.addEventListener('dragover', handleDragOver, false)
@@ -45,9 +46,9 @@ function initElements() {
 
 function checkFileApiSupport() {
   if (window.File && window.FileReader) {
-    member.unsupportedBrowserInfoEl.classList.add('hide')
+    hideElement(member.unsupportedBrowserInfoEl)
   } else {
-    member.unsupportedBrowserInfoEl.classList.remove('hide')
+    showElement(member.unsupportedBrowserInfoEl)
   }
 }
 
@@ -82,22 +83,34 @@ function processFile(file) {
 function createHandleFileLoaded(file) {
   return function handleFileLoaded(event) {
     const buffer = event.target.result,
-      pos_split = file.name.lastIndexOf('.'),
-      extension = file.name.substr(pos_split + 1),
-      trunk = file.name.substr(0, pos_split)
+      posSplit = file.name.lastIndexOf('.'),
+      extension = file.name.substr(posSplit + 1),
+      trunk = file.name.substr(0, posSplit)
+
     showFileInfo(file)
-    if (wasm.extensionIsSupported(extension)) {
-      member.unsupportedFileTypeInfoEl.classList.add('hide')
-      const src = new wasm.Decoder(extension),
+
+    if (member.wasm.extensionIsSupported(extension)) {
+      hideElement(member.unsupportedFileTypeInfoEl)
+
+      const src = new member.wasm.Decoder(extension),
         out = src.extract(new Uint8Array(buffer)),
         blob = new Blob([out])
+
       saveAs(blob, trunk)
     } else {
-      member.unsupportedFileTypeInfoEl.classList.remove('hide')
+      showElement(member.unsupportedFileTypeInfoEl)
     }
   }
 }
 
 function showFileInfo(file) {
   member.infoEl.innerText = `${file.name}`
+}
+
+function showElement(element) {
+  element.classList.remove('hide')
+}
+
+function hideElement(element) {
+  element.classList.add('hide')
 }
