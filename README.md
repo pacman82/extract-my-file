@@ -59,3 +59,5 @@ The `/dist/` folder on the master branch is published on github pages. As [descr
 npm run build
 git subtree push --prefix dist origin gh-pages
 ```
+
+See also: <https://gist.github.com/cobyism/4730490#gistcomment-1394421>
